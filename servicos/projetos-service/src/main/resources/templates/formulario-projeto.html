@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Cadastro de Projeto</title></head>
+<body>
+    <h1>Cadastro de Projeto</h1>
+    <p th:if="${mensagem != null}" th:text="${mensagem}"></p>
+    <form th:action="@{/formulario-projeto}" method="post">
+        <label>Título:</label><input type="text" name="titulo" required><br><br>
+        <label>Professor responsável:</label>
+        <select name="professorId" required>
+            <option value="">Selecione</option>
+            <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
+        </select><br><br>
+        <label>Alunos vinculados:</label>
+        <select name="alunosIds" multiple size="6">
+            <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+        </select><br><br>
+        <label>Área do projeto:</label><input type="text" name="areaProjeto" required><br><br>
+        <label>Resumo:</label><textarea name="resumo" required></textarea><br><br>
+        <label>Palavra-chave 1:</label><input type="text" name="palavraChave1" required><br><br>
+        <label>Palavra-chave 2:</label><input type="text" name="palavraChave2"><br><br>
+        <label>Palavra-chave 3:</label><input type="text" name="palavraChave3"><br><br>
+        <label>URL do documento:</label><input type="url" name="urlDocumento"><br><br>
+        <button type="submit">Salvar</button>
+    </form>
+    <a th:href="@{/home}">Voltar</a>
+</body>
+</html>

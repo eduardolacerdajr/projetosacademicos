@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Cadastro de Professor</title></head>
+<body>
+    <h1>Cadastro de Professor</h1>
+    <p th:if="${mensagem != null}" th:text="${mensagem}"></p>
+    <form th:action="@{/formulario-professor}" method="post">
+        <label>Matrícula:</label><input type="number" name="matricula" required><br><br>
+        <label>Nome:</label><input type="text" name="nome" required><br><br>
+        <label>Curso:</label><input type="text" name="curso" required><br><br>
+        <h3>Endereço</h3>
+        <label>Rua:</label><input type="text" name="rua" required><br><br>
+        <label>Número:</label><input type="text" name="numero" required><br><br>
+        <label>CEP:</label><input type="text" name="cep" required><br><br>
+        <label>Cidade:</label><input type="text" name="cidade" required><br><br>
+        <label>Estado:</label><input type="text" name="estado" required><br><br>
+        <label>País:</label><input type="text" name="pais" required><br><br>
+        <button type="submit">Salvar</button>
+    </form>
+    <a th:href="@{/home}">Voltar</a>
+</body>
+</html>
