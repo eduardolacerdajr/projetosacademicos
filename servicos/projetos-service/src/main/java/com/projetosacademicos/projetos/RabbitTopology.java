@@ -1,5 +1,8 @@
 package com.projetosacademicos.projetos;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -34,8 +37,9 @@ public class RabbitTopology {
     }
 
     @Bean
-    public Binding projetoCadastradoBinding(Queue projetoCadastradoQueue,
-            DirectExchange projetosExchange) {
+    public Binding projetoCadastradoBinding(
+            @Qualifier("projetoCadastradoQueue") Queue projetoCadastradoQueue,
+            @Qualifier("projetosExchange") DirectExchange projetosExchange) {
         return BindingBuilder.bind(projetoCadastradoQueue)
             .to(projetosExchange)
             .with(ROUTING_KEY);
@@ -53,19 +57,20 @@ public class RabbitTopology {
 
     @Bean
     public Binding projetoCadastradoDeadLetterBinding(
-            Queue projetoCadastradoDeadLetterQueue,
-            DirectExchange projetosDeadLetterExchange) {
+            @Qualifier("projetoCadastradoDeadLetterQueue") Queue projetoCadastradoDeadLetterQueue,
+            @Qualifier("projetosDeadLetterExchange") DirectExchange projetosDeadLetterExchange) {
         return BindingBuilder.bind(projetoCadastradoDeadLetterQueue)
             .to(projetosDeadLetterExchange)
             .with(DEAD_LETTER_ROUTING_KEY);
     }
 
     @Bean
-    public MessageConverter rabbitMessageConverter() {
-        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+    public MessageConverter rabbitMessageConverter(ObjectMapper objectMapper) {
+        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter(objectMapper);
         DefaultClassMapper classMapper = new DefaultClassMapper();
-        classMapper.setIdClassMapping(java.util.Collections.singletonMap(
+        classMapper.setIdClassMapping(Collections.singletonMap(
             ProjetoCadastradoEvento.TIPO_EVENTO, ProjetoCadastradoEvento.class));
+        classMapper.afterPropertiesSet();
         converter.setClassMapper(classMapper);
         return converter;
     }

@@ -16,16 +16,17 @@ import org.springframework.context.annotation.Import;
     "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
     "spring.jpa.hibernate.ddl-auto=create-drop"
 })
-@Import(NotificacaoService.class)
+@Import({NotificacaoService.class, ProjetoCadastradoListener.class})
 class NotificacaoServiceTest {
     @Autowired private NotificacaoService service;
     @Autowired private NotificacaoRepository repository;
+    @Autowired private ProjetoCadastradoListener listener;
 
     @Test
-    void persisteUmaNotificacaoParaProfessorEParaCadaAluno() {
+    void consomeEventoEPersisteUmaNotificacaoParaProfessorEParaCadaAluno() {
         ProjetoCadastradoEvento evento = evento("evento-1");
 
-        service.processar(evento);
+        listener.receber(evento);
 
         List<Notificacao> notificacoes = repository.findByProjetoIdOrderByDataCriacaoAscIdAsc(101L);
         assertThat(notificacoes)
