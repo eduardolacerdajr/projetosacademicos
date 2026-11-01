@@ -19,16 +19,16 @@ public class FormularioController {
     private final RestTemplate restTemplate;
     private final String alunosUrl;
     private final String professoresUrl;
-    private final ProjetoRepository projetoRepository;
+    private final ProjetoService projetoService;
 
     public FormularioController(RestTemplate restTemplate,
             @Value("${alunos.service.url}") String alunosUrl,
             @Value("${professores.service.url}") String professoresUrl,
-            ProjetoRepository projetoRepository) {
+            ProjetoService projetoService) {
         this.restTemplate = restTemplate;
         this.alunosUrl = alunosUrl;
         this.professoresUrl = professoresUrl;
-        this.projetoRepository = projetoRepository;
+        this.projetoService = projetoService;
     }
 
     @GetMapping({"/", "/home"})
@@ -72,7 +72,7 @@ public class FormularioController {
             Model model) {
         projeto.setProfessorResponsavelId(professorId);
         projeto.setAlunosIds(alunosIds);
-        projetoRepository.save(projeto);
+        projetoService.cadastrar(projeto);
         model.addAttribute("mensagem", "Projeto cadastrado com sucesso!");
         carregarParticipantes(model);
         model.addAttribute("projeto", new Projeto());

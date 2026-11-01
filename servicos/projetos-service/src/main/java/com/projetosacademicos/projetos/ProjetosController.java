@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/projetos")
 public class ProjetosController {
     private final ProjetoRepository repository;
-    public ProjetosController(ProjetoRepository repository) { this.repository = repository; }
+    private final ProjetoService projetoService;
+    public ProjetosController(ProjetoRepository repository, ProjetoService projetoService) {
+        this.repository = repository;
+        this.projetoService = projetoService;
+    }
 
     @GetMapping public List<Projeto> listar() { return repository.findAll(); }
     @GetMapping("/{id}") public ResponseEntity<Projeto> obter(@PathVariable Long id) {
@@ -27,7 +31,7 @@ public class ProjetosController {
     }
     @PostMapping public ResponseEntity<Projeto> cadastrar(@RequestBody Projeto projeto) {
         projeto.setId(null);
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(projeto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(projetoService.cadastrar(projeto));
     }
     @PutMapping("/{id}") public ResponseEntity<Projeto> atualizar(@PathVariable Long id, @RequestBody Projeto projeto) {
         Optional<Projeto> atual = repository.findById(id);
