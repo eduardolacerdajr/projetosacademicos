@@ -22,6 +22,18 @@ A interface web fica em `http://localhost:8082/home`. Os endereços dos serviço
 
 Para compilar todos os módulos pelo agregador Maven da raiz: `sh mvnw verify`.
 
+## Mensageria
+
+O RabbitMQ pode ser iniciado na raiz do projeto com `docker compose up -d rabbitmq`.
+O broker disponibiliza AMQP em `localhost:5672` e o painel de administração em
+`http://localhost:15672`. O usuário e a senha padrão locais são `guest`/`guest`;
+podem ser sobrescritos pelas variáveis `RABBITMQ_USERNAME` e `RABBITMQ_PASSWORD`.
+
+O Projeto Service declara a exchange durável `projetos.events`, a fila durável
+`projeto_cadastrado` e o binding `projeto.cadastrado`. Mensagens rejeitadas após
+as tentativas de processamento são encaminhadas à fila durável
+`projeto_cadastrado.dlq`.
+
 ## APIs
 
 - Alunos: `/api/v1/alunos`, `/api/v1/alunos/{id}`, `/api/v1/alunos/matricula/{matricula}`
