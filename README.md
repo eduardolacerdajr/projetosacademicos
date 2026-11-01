@@ -41,6 +41,7 @@ as tentativas de processamento são encaminhadas à fila durável
 - Alunos: `/api/v1/alunos`, `/api/v1/alunos/{id}`, `/api/v1/alunos/matricula/{matricula}`
 - Professores: `/api/v1/professores`, `/api/v1/professores/{id}`, `/api/v1/professores/matricula/{matricula}`
 - Projetos: `/api/v1/projetos`, `/api/v1/projetos/{id}`, `/api/v1/projetos/titulo/{titulo}`, `/api/v1/projetos/professor/{id}`, `/api/v1/projetos/aluno/{id}`
+- Notificações: `GET /api/v1/notificacoes`, `GET /api/v1/notificacoes?projetoId={id}`, `GET /api/v1/notificacoes/projeto/{id}`, `GET /api/v1/notificacoes/{id}`
 
 No serviço de projetos, use `professorResponsavelId` e `alunosIds` (lista de IDs) para referenciar entidades gerenciadas pelos demais serviços. O formulário do serviço de projetos consulta os serviços de alunos e professores via HTTP para montar as opções.
 

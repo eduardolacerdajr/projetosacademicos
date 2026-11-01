@@ -71,7 +71,7 @@ public class RabbitTopology {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultClassMapper classMapper = new DefaultClassMapper();
         classMapper.setIdClassMapping(Collections.singletonMap(
-            "ProjetoCadastrado", ProjetoCadastradoEvento.class));
+            ProjetoCadastradoEvento.TIPO_EVENTO, ProjetoCadastradoEvento.class));
         converter.setClassMapper(classMapper);
         return converter;
     }

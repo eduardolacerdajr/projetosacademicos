@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProjetoCadastradoEvento {
+    public static final String TIPO_EVENTO = "ProjetoCadastrado";
+
     private String eventoId;
     private String tipoEvento;
     private Long projetoId;
