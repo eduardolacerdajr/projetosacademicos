@@ -36,6 +36,17 @@ O Projeto Service declara a exchange durável `projetos.events`, a fila durável
 as tentativas de processamento são encaminhadas à fila durável
 `projeto_cadastrado.dlq`.
 
+As mensagens são publicadas como persistentes e as filas sobrevivem ao reinício
+do broker por meio do volume `rabbitmq-data`. Se o Notification Service estiver
+parado, as mensagens ficam na fila principal até o consumidor voltar. Falhas de
+processamento são tentadas três vezes com backoff; depois, vão para a DLQ.
+
+Para validar a retenção manualmente, inicie o RabbitMQ e o Projeto Service,
+mantenha o Notification Service parado, cadastre um projeto por
+`POST /api/v1/projetos` e confira a fila `projeto_cadastrado` no painel do
+RabbitMQ. Ao iniciar o Notification Service, as mensagens serão consumidas e os
+registros poderão ser consultados em `GET /api/v1/notificacoes?projetoId={id}`.
+
 ## APIs
 
 - Alunos: `/api/v1/alunos`, `/api/v1/alunos/{id}`, `/api/v1/alunos/matricula/{matricula}`
