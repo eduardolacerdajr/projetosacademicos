@@ -5,6 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -61,6 +62,11 @@ public class RabbitTopology {
 
     @Bean
     public MessageConverter rabbitMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+        DefaultClassMapper classMapper = new DefaultClassMapper();
+        classMapper.setIdClassMapping(java.util.Collections.singletonMap(
+            ProjetoCadastradoEvento.TIPO_EVENTO, ProjetoCadastradoEvento.class));
+        converter.setClassMapper(classMapper);
+        return converter;
     }
 }

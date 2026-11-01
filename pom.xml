@@ -11,6 +11,7 @@
 		<module>servicos/alunos-service</module>
 		<module>servicos/professores-service</module>
 		<module>servicos/projetos-service</module>
+		<module>servicos/notificacoes-service</module>
 	</modules>
 
 </project>
