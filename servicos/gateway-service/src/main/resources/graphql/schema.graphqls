@@ -1,0 +1,109 @@
+type Query {
+    alunos: [Aluno!]!
+    aluno(id: ID!): Aluno
+    alunosPorMatricula(matricula: String!): [Aluno!]!
+
+    professores: [Professor!]!
+    professor(id: ID!): Professor
+    professoresPorMatricula(matricula: Int!): [Professor!]!
+
+    projetos: [Projeto!]!
+    projeto(id: ID!): Projeto
+    projetosPorTitulo(titulo: String!): [Projeto!]!
+    projetosPorProfessor(professorId: ID!): [Projeto!]!
+    projetosPorAluno(alunoId: ID!): [Projeto!]!
+}
+
+type Mutation {
+    criarAluno(input: AlunoInput!): Aluno!
+    atualizarAluno(id: ID!, input: AlunoInput!): Aluno
+    removerAluno(id: ID!): Boolean!
+
+    criarProfessor(input: ProfessorInput!): Professor!
+    atualizarProfessor(id: ID!, input: ProfessorInput!): Professor
+    removerProfessor(id: ID!): Boolean!
+
+    criarProjeto(input: ProjetoInput!): Projeto!
+    atualizarProjeto(id: ID!, input: ProjetoInput!): Projeto
+    removerProjeto(id: ID!): Boolean!
+}
+
+type Endereco {
+    id: ID
+    rua: String
+    numero: String
+    cep: String
+    cidade: String
+    estado: String
+    pais: String
+}
+
+type Aluno {
+    id: ID!
+    matricula: String
+    nome: String
+    cpf: String
+    curso: String
+    endereco: Endereco
+    projetos: [Projeto!]!
+}
+
+type Professor {
+    id: ID!
+    matricula: Int
+    nome: String
+    curso: String
+    endereco: Endereco
+    projetos: [Projeto!]!
+}
+
+type Projeto {
+    id: ID!
+    titulo: String
+    professorResponsavelId: ID
+    professorResponsavel: Professor
+    alunosIds: [ID!]!
+    alunos: [Aluno!]!
+    areaProjeto: String
+    resumo: String
+    palavraChave1: String
+    palavraChave2: String
+    palavraChave3: String
+    urlDocumento: String
+}
+
+input EnderecoInput {
+    rua: String
+    numero: String
+    cep: String
+    cidade: String
+    estado: String
+    pais: String
+}
+
+input AlunoInput {
+    matricula: String!
+    nome: String!
+    cpf: String
+    curso: String
+    endereco: EnderecoInput
+}
+
+input ProfessorInput {
+    matricula: Int!
+    nome: String!
+    curso: String
+    endereco: EnderecoInput
+}
+
+input ProjetoInput {
+    titulo: String!
+    professorResponsavelId: ID
+    alunosIds: [ID!]
+    areaProjeto: String
+    resumo: String
+    palavraChave1: String
+    palavraChave2: String
+    palavraChave3: String
+    urlDocumento: String
+}
