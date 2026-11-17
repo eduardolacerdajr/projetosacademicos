@@ -1,4 +1,5 @@
 package com.projetosacademicos.projetos;
+import javax.persistence.FetchType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Projeto {
     private Long id;
     @Column private String titulo;
     @Column private Long professorResponsavelId;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "projeto_aluno", joinColumns = @JoinColumn(name = "fk_projeto_id"))
     @Column(name = "fk_aluno_id")
     private List<Long> alunosIds = new ArrayList<>();
