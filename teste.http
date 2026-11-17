@@ -1,0 +1,4 @@
+POST http://localhost:8081/graphql
+Content-Type: application/json
+
+{"query": "{ projetos { titulo professorResponsavel { nome } alunos { nome } } }"}

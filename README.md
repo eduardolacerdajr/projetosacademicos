@@ -13,11 +13,21 @@ O projeto foi separado em três aplicações Spring Boot independentes. Cada apl
 
 Com Java 11 ou superior, a partir da raiz, inicie cada serviço em seu próprio terminal:
 
+# Linux
 ```sh
 sh mvnw -f servicos/alunos-service/pom.xml spring-boot:run
 sh mvnw -f servicos/professores-service/pom.xml spring-boot:run
 sh mvnw -f servicos/projetos-service/pom.xml spring-boot:run
 sh mvnw -f servicos/gateway-service/pom.xml spring-boot:run
+```
+
+# Windows
+
+```PowerShell
+.\mvnw.cmd -f servicos/alunos-service/pom.xml spring-boot:run
+.\mvnw.cmd -f servicos/professores-service/pom.xml spring-boot:run
+.\mvnw.cmd -f servicos/projetos-service/pom.xml spring-boot:run
+.\mvnw.cmd -f servicos/gateway-service/pom.xml spring-boot:run
 ```
 
 A interface web fica em `http://localhost:8082/home`. Os endereços dos serviços de alunos e professores podem ser sobrescritos por `ALUNOS_SERVICE_URL` e `PROFESSORES_SERVICE_URL`. As variáveis `ALUNOS_DATABASE_URL`, `PROFESSORES_DATABASE_URL` e `PROJETOS_DATABASE_URL` configuram cada banco SQLite separadamente; `SERVER_PORT` altera a porta da aplicação iniciada.
@@ -42,7 +52,9 @@ O `gateway-service` expõe `POST http://localhost:8081/graphql` (corpo JSON com 
 - Orquestração: `Projeto.professorResponsavel` e `Projeto.alunos` são resolvidos nos serviços de professores e alunos; `Aluno.projetos` e `Professor.projetos` no serviço de projetos
 - URLs dos serviços: `ALUNOS_SERVICE_URL`, `PROFESSORES_SERVICE_URL` e `PROJETOS_SERVICE_URL`
 
-Exemplo (com os quatro serviços no ar):
+Exemplos (com os quatro serviços no ar):
+
+**Linux / macOS / Git Bash**
 
 ```sh
 curl -X POST http://localhost:8081/graphql -H 'Content-Type: application/json' \
@@ -54,7 +66,28 @@ curl -X POST http://localhost:8081/graphql -H 'Content-Type: application/json' \
   -d '{"query":"mutation { criarAluno(input: {matricula: \"202401\", nome: \"Maria Souza\"}) { id nome } }"}'
 ```
 
-Testes do gateway: `sh mvnw -f servicos/gateway-service/pom.xml test`.
+**Windows (PowerShell)**
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:8081/graphql -Method Post -ContentType 'application/json' `
+  -Body '{"query":"{ projetos { titulo professorResponsavel { nome } alunos { nome } } }"}' |
+  ConvertTo-Json -Depth 10
+```
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:8081/graphql -Method Post -ContentType 'application/json' `
+  -Body '{"query":"mutation { criarAluno(input: {matricula: \"202401\", nome: \"Maria Souza\"}) { id nome } }"}' |
+  ConvertTo-Json -Depth 10
+```
+
+No PowerShell, `curl` é um alias de `Invoke-WebRequest`; por isso os exemplos acima usam `Invoke-RestMethod`.
+
+Testes do gateway:
+
+| Sistema | Comando |
+|---|---|
+| Linux / macOS / Git Bash | `sh mvnw -f servicos/gateway-service/pom.xml test` |
+| Windows (PowerShell / CMD) | `.\mvnw.cmd -f servicos/gateway-service/pom.xml test` |
 
 ## Dados existentes
 
